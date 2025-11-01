@@ -1,33 +1,34 @@
-#include <iostream>
-#include <bits/ostream.tcc>
+#include "libmfcc/audio/mp3_audio_reader.h"
+#include "libmfcc/dsp/frame_extractor.h"
+#include "libmfcc/features/mfcc.h"
+#include "libmfcc/dsp/dft_transformer.h"
+#include "libmfcc/dsp/fft_transformer.h"
+#include "libmfcc/dsp/window_functiion.h"
 
-#include "window_functiion.h"
-#include "frame_extractor.h"
-#include "audio_reader.h"
-#include "wav_audio_reader.h"
-#include "mp3_audio_reader.h"
+#include <iostream>
+#include <filesystem>
 
 int main() {
-    auto* reader = new Mp3AudioReader();
-    AudioBuffer audio = reader->load("../data/common_voice_en_42698961.mp3");
+    using namespace libmfcc;
 
-    FixedFrameExtractor frameExtractor(400, 160);
-    auto frames = frameExtractor.extract(audio);
+    std::filesystem::path inputFile("../../data/common_voice_en_42698961.mp3");
+    audio::Mp3AudioReader reader;
+    auto audio = reader.load(inputFile);
 
-    HammingWindow window(400);
-    for (auto& f : frames) {
-        window.apply(f.data);
+    dsp::FixedFrameExtractor extractor(400, 160);
+    auto frames = extractor.extract(audio);
 
-        for (auto& el : f.data)
-        {
-            std::cout << el << std::endl;
-        }
+    dsp::HammingWindow window(400);
+    for (auto& f : frames) window.apply(f.data);
 
-        //  STFT/MFCC
-    }
+    dsp::FFTTransformer fft;
+    dsp::DFTTransformer dft;
 
-    delete reader;
-    // TODO: save frames / debug
+    auto mfcc_fft = features::computeMFCC(frames, audio.sampleRate, fft);
+    auto mfcc_dft = features::computeMFCC(frames, audio.sampleRate, dft);
+
+    std::cout << "FFT MFCC frames: " << mfcc_fft.size() << "\n";
+    std::cout << "DFT MFCC frames: " << mfcc_dft.size() << "\n";
 
     return 0;
 }

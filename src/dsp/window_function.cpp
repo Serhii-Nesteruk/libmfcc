@@ -1,5 +1,7 @@
-#include "../include/window_functiion.h"
+#include "libmfcc/dsp/window_functiion.h"
 #include <cmath>
+
+using namespace libmfcc::dsp;
 
 static std::vector<float> buildWindow(int size, WindowType type)
 {

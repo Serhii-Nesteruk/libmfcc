@@ -69,4 +69,4 @@ Frame 1: [ -4.91, 1.01, 0.73, -0.52, ... ]
 The embedded `minimp3` decoder is distributed under the **Unlicense (Public Domain)**.
 
 See:
-- [`LICENSE`](./LICENSE)
+- [`LICENSE`](./LICENSE.txt)

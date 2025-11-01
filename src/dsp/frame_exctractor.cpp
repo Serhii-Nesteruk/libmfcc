@@ -1,11 +1,13 @@
-#include "../include/frame_extractor.h"
+#include "libmfcc/dsp/frame_extractor.h"
+
+using namespace libmfcc::dsp;
 
 FixedFrameExtractor::FixedFrameExtractor(int windowSize, int hopSize)
     : _windowSize(windowSize), _hopSize(hopSize)
 {
 }
 
-std::vector<Frame> FixedFrameExtractor::extract(const AudioBuffer& audio)
+std::vector<Frame> FixedFrameExtractor::extract(const audio::AudioBuffer& audio)
 {
     std::vector<Frame> frames;
     const auto& x = audio.samples;
