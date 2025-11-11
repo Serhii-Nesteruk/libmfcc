@@ -2,6 +2,10 @@
 
 #include "stdexcept"
 #include "fstream"
+#include "libmfcc/utils/path.h"
+
+using libmfcc::compat::source_location;
+using libmfcc::utils::resolve_from_callsite;
 
 namespace libmfcc::audio
 {
@@ -10,9 +14,10 @@ namespace libmfcc::audio
         return id[0] == s[0] && id[1] == s[1] && id[2] == s[2] && id[3] == s[3];
     }
 
-    AudioBuffer WavAudioReader::load(const std::filesystem::path& inputFile)
+    AudioBuffer WavAudioReader::load(const std::filesystem::path& inputFile, source_location loc)
     {
-        const std::string path = inputFile.string();
+        const auto resolvedPath = resolve_from_callsite(inputFile, loc);
+        const std::string path = resolvedPath.string();
 
         std::ifstream in(path, std::ios::binary);
         if (!in)

@@ -11,7 +11,7 @@
 int main() {
     using namespace libmfcc;
 
-    std::filesystem::path inputFile("../../data/common_voice_en_42698961.mp3");
+    std::filesystem::path inputFile("./data/common_voice_en_42698961.mp3");
     audio::Mp3AudioReader reader;
     auto audio = reader.load(inputFile);
 
