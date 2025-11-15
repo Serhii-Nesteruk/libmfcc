@@ -1,0 +1,5 @@
+add_executable(libmfcc_mfcc_pipeline_test mfcc_pipeline.cpp)
+
+target_link_libraries(libmfcc_mfcc_pipeline_test PRIVATE libmfcc::libmfcc)
+
+add_test(NAME mfcc_pipeline COMMAND libmfcc_mfcc_pipeline_test)

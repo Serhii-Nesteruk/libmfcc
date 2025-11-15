@@ -15,8 +15,8 @@ namespace libmfcc::compat {
             return {file, function, line};
         }
 
-        constexpr const char* file_name() const noexcept { return file_name_; }
-        constexpr const char* function_name() const noexcept { return function_name_; }
-        constexpr int line() const noexcept { return line_; }
+        [[nodiscard]] constexpr const char* file_name() const noexcept { return file_name_; }
+        [[nodiscard]] constexpr const char* function_name() const noexcept { return function_name_; }
+        [[nodiscard]] constexpr int line() const noexcept { return line_; }
     };
 }

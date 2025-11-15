@@ -1,5 +1,6 @@
 #pragma once
 
+#include "libmfcc/config.h"
 #include "libmfcc/dsp/frame.h"
 #include "libmfcc/dsp/transformer.h"
 
@@ -7,23 +8,21 @@
 
 namespace libmfcc::features
 {
-    [[nodiscard]] float hzToMel(float hz);
-    [[nodiscard]] float melToHz(float mel);
-    void buildMelFilterbank(int sampleRate,
-                               int nFft,
-                               int nMels,
-                               std::vector<std::vector<float>>& filters);
+    struct MfccOptions
+    {
+        int sampleRate = 16000;
+        int numFilters = 26;
+        int numCoeffs = 13;
+        double minFreq = 0.0;
+        double maxFreq = 8000.0;
+        bool includeEnergy = true;
+        MelScale melScale = MelScale::Slaney;
+    };
 
-    [[nodiscard]] std::vector<float> magnitude(const std::vector<std::complex<float>>& spec);
-    [[nodiscard]] std::vector<float> applyMel(const std::vector<std::vector<float>>& filters,
-                                       const std::vector<float>& mag);
+    [[nodiscard]] double hzToMel(double hz, MelScale scale);
+    [[nodiscard]] double melToHz(double mel, MelScale scale);
 
-    [[nodiscard]] std::vector<float> dctII(const std::vector<float>& v, int nCoeffs);
-    [[nodiscard]] std::vector<std::vector<float>> computeMFCC(
-        const std::vector<libmfcc::dsp::Frame>& frames,
-        int sampleRate,
-        const libmfcc::dsp::ITransformer& transformer,
-        int nMels = 26,
-        int nCoeffs = 13
-    );
+    [[nodiscard]] MfccMatrix computeMFCC(const std::vector<libmfcc::dsp::Frame>& frames,
+                       const libmfcc::dsp::ITransformer& transformer,
+                       const MfccOptions& options);
 }
